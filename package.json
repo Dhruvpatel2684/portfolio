@@ -1,0 +1,47 @@
+{
+  "name": "dhruv-patel-portfolio",
+  "version": "1.0.0",
+  "description": "Professional portfolio website featuring an interactive 3D gallery built with Three.js",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000 -c-1",
+    "dev": "npx live-server --port=8000",
+    "serve": "python -m http.server 8000",
+    "minify:css": "npx clean-css-cli -o css/style.min.css css/style.css",
+    "minify:js": "npx terser js/main.js -o js/main.min.js -c -m && npx terser js/gallery.js -o js/gallery.min.js -c -m",
+    "optimize": "npm run minify:css && npm run minify:js",
+    "lighthouse": "npx lighthouse http://localhost:8000 --view",
+    "validate": "npx html-validate index.html"
+  },
+  "keywords": [
+    "portfolio",
+    "three.js",
+    "3d-graphics",
+    "webgl",
+    "computer-engineering",
+    "web-development",
+    "frontend",
+    "interactive",
+    "dhruv-patel"
+  ],
+  "author": {
+    "name": "Dhruv Patel",
+    "email": "",
+    "url": "https://www.linkedin.com/in/dhruv-patel-0a0173259/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/portfolio/issues"
+  },
+  "homepage": "https://yourusername.github.io/portfolio/",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}
