@@ -1,225 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhruvkumar Patel | AI Benchmark Engineer | AI Evaluation Specialist | Autonomous-Agent QA</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Dhruv Patel — AI Evaluation Specialist & Prompt Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    h1, h2 { font-family: 'Playfair Display', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-zinc-950 text-zinc-100">
-  <!-- Navbar -->
-  <nav class="fixed top-0 w-full bg-zinc-950/90 backdrop-blur-md z-50 border-b border-zinc-800">
-    <div class="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-      <h1 class="text-2xl font-bold tracking-tight">Dhruvkumar Patel</h1>
-      <div class="flex gap-8 text-sm font-medium">
-        <a href="#experience" class="hover:text-emerald-400 transition">Experience</a>
-        <a href="#projects" class="hover:text-emerald-400 transition">Projects</a>
-        <a href="#skills" class="hover:text-emerald-400 transition">Skills</a>
-        <a href="#education" class="hover:text-emerald-400 transition">Education</a>
-      </div>
-      <div class="flex gap-4">
-        <a href="https://github.com/Dhruvpatel2684" target="_blank" class="hover:text-emerald-400"><i class="fab fa-github text-2xl"></i></a>
-        <a href="https://linkedin.com/in/dhruv-patel-0a0173259" target="_blank" class="hover:text-emerald-400"><i class="fab fa-linkedin text-2xl"></i></a>
-      </div>
-    </div>
-  </nav>
+<body>
 
-  <!-- Hero -->
-  <section class="min-h-screen flex items-center pt-20 bg-gradient-to-br from-zinc-950 via-zinc-900 to-emerald-950">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-      <div>
-        <h1 class="text-6xl font-bold leading-tight">Dhruvkumar Patel</h1>
-        <p class="text-3xl text-emerald-400 mt-3">AI Benchmark Engineer | AI Evaluation Specialist | Autonomous-Agent QA</p>
-        <p class="mt-8 text-xl text-zinc-400 max-w-lg">
-          Computer Engineering graduate with 1+ year of specialized experience in AI benchmark engineering, autonomous-agent evaluation, and reproducible testing infrastructure.
-        </p>
-        <div class="flex gap-4 mt-10">
-          <a href="https://github.com/Dhruvpatel2684" target="_blank" 
-             class="px-8 py-4 bg-white text-black rounded-2xl font-semibold flex items-center gap-3 hover:scale-105 transition">
-            <i class="fab fa-github"></i> GitHub
-          </a>
-          <a href="mailto:dhruvpatel2284@gmail.com" 
-             class="px-8 py-4 border border-zinc-400 rounded-2xl font-semibold hover:bg-white hover:text-black transition">
-            Get in touch
-          </a>
-        </div>
+  <!-- Floating dot canvas — covers ENTIRE page, dots appear near cursor -->
+  <canvas id="dot-field"></canvas>
+
+  <!-- Theme toggle top-left -->
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Nav -->
+  <header class="site-header" id="site-header">
+    <nav class="site-nav">
+      <a href="#" class="brand">DP</a>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
       </div>
-      <div class="relative">
-        <img src="dhruvphoto.jpeg" alt="Dhruvkumar Patel" class="rounded-3xl shadow-2xl border border-zinc-700 w-full max-w-md mx-auto">
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <p class="hero-label">AI Evaluation Specialist &middot; Prompt Engineer</p>
+      <h1 class="hero-name" id="hero-name">Dhruv Patel</h1>
+      <p class="hero-sub">Building evaluation infrastructure and training data for frontier AI systems.</p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn-solid">View Work</a>
+        <a href="mailto:dhruvpatel2284@gmail.com" class="btn-outline">Get in Touch</a>
       </div>
     </div>
   </section>
 
-  <!-- Professional Summary -->
-  <section class="max-w-4xl mx-auto px-6 py-20">
-    <h2 class="text-4xl font-bold mb-8">Professional Summary</h2>
-    <p class="text-lg leading-relaxed text-zinc-300">
-      Computer Engineering graduate with 1+ year of specialized experience in AI benchmark engineering, autonomous-agent
-      evaluation, and reproducible testing infrastructure. Designs and executes SWE-bench and Terminal-Bench style evaluation
-      pipelines — including Dockerized debugging environments, pytest-based deterministic verifier systems, and Oracle/NOP
-      validation frameworks — for frontier LLM development at AfterQuery. Conducts structured multi-domain AI systems evaluation
-      at Mercor AI covering multimodal outputs, hallucination detection, and reasoning quality. Combines deep evaluation
-      engineering expertise with full-stack and DevOps capabilities (Linux, Docker, Python, REST APIs) to build reliable,
-      production-grade AI assessment infrastructure.
-    </p>
-  </section>
-
-  <!-- Experience -->
-  <section id="experience" class="bg-zinc-900 py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12">Professional Experience</h2>
-      <div class="space-y-14">
-        <!-- AfterQuery -->
-        <div>
-          <div class="flex justify-between mb-3">
-            <h3 class="text-2xl font-semibold">AfterQuery (San Francisco, CA — Remote)</h3>
-            <span class="text-emerald-400">Apr 2026 – Present</span>
-          </div>
-          <p class="text-xl text-emerald-400">AI Training Data & Benchmark Specialist (Contract)</p>
-          <ul class="list-disc list-outside mt-4 text-zinc-300 space-y-2 pl-5 text-[14.5px]">
-            <li>Engineered SWE-bench-style benchmark tasks for frontier AI coding agents across six flagship projects: Silver, Pluto, Shakespeare, Artifact, Seed, and Rewrite.</li>
-            <li><strong>Project Silver:</strong> Authored Dockerized debugging environments, deterministic pytest verifier harnesses, oracle reference solutions, and machine-verifiable test suites for autonomous-agent evaluation.</li>
-            <li><strong>Project Silver:</strong> Simulated realistic software engineering failure scenarios including broken API endpoints, ETL pipeline corruption, dependency conflicts, and multi-step terminal debugging workflows within reproducible container environments.</li>
-            <li><strong>Project Pluto:</strong> Designed and validated Terminal-Bench style evaluation tasks covering Docker container repair, Linux shell debugging, API validation, and DevOps/security scanning workflows with strict Oracle vs NOP validation standards.</li>
-            <li>Built benchmark QA pipelines enforcing deterministic execution: tasks required unambiguous pass/fail outcomes verifiable by automated test harnesses, eliminating evaluator subjectivity.</li>
-            <li><strong>Project Shakespeare:</strong> Authored gold-standard creative writing evaluation rubrics with craft-diagnosis frameworks and line-level rewrite evidence, following strict anti-AI-pattern annotation standards.</li>
-            <li><strong>Project Artifact:</strong> Curated and validated professional-grade business artifacts (PPTX investor decks, DOCX reports, XLSX financial models) against strict originality, design, and IP compliance rubrics.</li>
-          </ul>
+  <!-- ===== ABOUT ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2 class="section-heading"><span>01</span>About</h2>
+      <div class="about-layout">
+        <div class="about-copy">
+          <p>Computer Engineering graduate with <strong>1+ year</strong> of hands-on experience in LLM evaluation, prompt engineering, and AI training data creation.</p>
+          <p>Currently contracted across three AI platforms — executing structured SxS evaluations and hallucination detection at <strong>Mercor AI</strong>, authoring SWE-bench-style tasks and gold-standard datasets at <strong>AfterQuery</strong>, and performing large-scale bilingual data annotation at <strong>Innodata</strong>.</p>
+          <p>Skilled in RLHF pipelines, Generative AI output assessment, AI Alignment, bias detection, and PII identification. Combines strong analytical evaluation skills with full-stack development expertise.</p>
         </div>
-
-        <!-- Mercor AI -->
-        <div>
-          <div class="flex justify-between mb-3">
-            <h3 class="text-2xl font-semibold">Mercor AI (San Francisco, USA — Remote)</h3>
-            <span class="text-emerald-400">Jan 2026 – Present</span>
+        <div class="about-sidebar">
+          <div class="contact-line"><i class="fas fa-envelope"></i> dhruvpatel2284@gmail.com</div>
+          <div class="contact-line"><i class="fas fa-phone"></i> +91 9898570058</div>
+          <div class="contact-line"><i class="fas fa-location-dot"></i> India (Remote)</div>
+          <div class="stats-row">
+            <div class="stat"><strong>6+</strong><span>Projects</span></div>
+            <div class="stat"><strong>5</strong><span>Companies</span></div>
+            <div class="stat"><strong>1+</strong><span>Year</span></div>
           </div>
-          <p class="text-xl text-emerald-400">AI Evaluation Expert (Contract)</p>
-          <ul class="list-disc list-outside mt-4 text-zinc-300 space-y-2 pl-5 text-[14.5px]">
-            <li>Executed structured side-by-side (SxS) AI systems evaluation across six specialized expert workflows: Cricket Expert (APAC), EU Football/Soccer Expert, Basketball Expert, Audio Expert, Short Video Captioning Expert, and Generalist Expert.</li>
-            <li>Assessed LLM output quality across multi-domain evaluation pipelines — benchmarking helpfulness, factual correctness, contextual reasoning, and response safety under strict annotation guidelines.</li>
-            <li>Identified and documented hallucinations, logical inconsistencies, bias signals, and PII exposure risks in AI-generated text, audio, and video outputs.</li>
-            <li>Designed adversarial and edge-case prompt scenarios to stress-test model reasoning, real-world task generalization, and multimodal output reliability.</li>
-            <li>Delivered structured evaluation reports via Mercor Studio, Airtable, Parimango, and Insightful under production-level quality and throughput standards.</li>
-          </ul>
-        </div>
-
-        <!-- Innodata -->
-        <div>
-          <div class="flex justify-between mb-3">
-            <h3 class="text-2xl font-semibold">Innodata India Pvt. Ltd. (Remote)</h3>
-            <span class="text-emerald-400">Feb 2026 – Present</span>
-          </div>
-          <p class="text-xl text-emerald-400">AI Data Annotator & Bilingual Content Evaluator (Contract)</p>
-          <ul class="list-disc list-outside mt-4 text-zinc-300 space-y-2 pl-5 text-[14.5px]">
-            <li>Performed large-scale annotation tasks including text classification, Named Entity Recognition (NER), and prompt-response alignment validation for AI training datasets.</li>
-            <li>Detected bias, safety violations, and factual hallucinations in AI-generated outputs; verified response accuracy against credible external sources.</li>
-            <li>Maintained strict quality throughput under project-specific annotation rubrics for multilingual (English/Hindi) AI training data pipelines.</li>
-          </ul>
-        </div>
-
-        <!-- Venom Technologies -->
-        <div>
-          <div class="flex justify-between mb-3">
-            <h3 class="text-2xl font-semibold">Venom Technologies (Anand, Gujarat)</h3>
-            <span class="text-emerald-400">Jan 2025 – May 2025</span>
-          </div>
-          <p class="text-xl text-emerald-400">Web Developer Intern</p>
-          <ul class="list-disc list-outside mt-4 text-zinc-300 space-y-2 pl-5 text-[14.5px]">
-            <li>Built customer and admin modules in React.js + Firebase with secure authentication and role-based access control.</li>
-            <li>Integrated Razorpay payment gateway, improving checkout pipeline performance by ~40%.</li>
-            <li>Implemented Zustand-based state management, reducing unnecessary re-renders and improving app stability.</li>
-          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Projects -->
-  <section id="projects" class="max-w-5xl mx-auto px-6 py-20">
-    <h2 class="text-4xl font-bold mb-12">Projects</h2>
-    <div class="grid md:grid-cols-2 gap-8">
-      <div class="bg-zinc-900 rounded-3xl p-8">
-        <h3 class="text-2xl font-semibold">LN Dev Mart — Full-Stack Retail System</h3>
-        <p class="text-emerald-400 mt-1">Next.js • React • TypeScript • PostgreSQL • Tailwind CSS</p>
-        <ul class="mt-6 space-y-3 text-zinc-300">
-          <li>Retail dashboard with POS billing, real-time inventory & automated GST reporting</li>
-          <li>Reduced build time by 40% using Turbopack</li>
-          <li>Secure API routes and KPI-driven business analytics</li>
+  <!-- ===== EXPERIENCE ===== -->
+  <section class="section section-alt" id="experience">
+    <div class="container">
+      <h2 class="section-heading"><span>02</span>Experience</h2>
+
+      <div class="exp-card">
+        <div class="exp-top">
+          <img src="https://mercor.com/favicon.ico" alt="" class="exp-logo">
+          <div class="exp-info"><h3>Mercor AI</h3><p>San Francisco, USA — Remote</p></div>
+          <time>Jan 2026 – Present</time>
+        </div>
+        <h4>AI Evaluation Expert (Contract)</h4>
+        <ul>
+          <li>Evaluated LLM outputs across sports, general knowledge, audio, and video tasks to improve accuracy, reasoning, and safety.</li>
+          <li>Contributed to 6 specialized workflows: Cricket Expert (APAC), EU Football, Basketball, Audio, Short Video Captioning, Generalist.</li>
+          <li>Performed SxS evaluation benchmarking helpfulness, correctness, and contextual understanding.</li>
+          <li>Designed prompt writing scenarios to test edge cases and real-world reasoning.</li>
+          <li>Identified hallucinations, logical inconsistencies, bias, and PII risks in AI-generated responses.</li>
+          <li>Evaluated multimodal outputs (text, audio, video) under strict annotation guidelines.</li>
         </ul>
+        <div class="tags"><span>LLM Eval</span><span>SxS</span><span>Hallucination Detection</span><span>RLHF</span><span>Multimodal</span><span>Prompt Engineering</span></div>
       </div>
-      <div class="bg-zinc-900 rounded-3xl p-8">
-        <h3 class="text-2xl font-semibold">Attendance System — Face Recognition</h3>
-        <p class="text-emerald-400 mt-1">Python • OpenCV • dlib</p>
-        <ul class="mt-6 space-y-3 text-zinc-300">
-          <li>Real-time face recognition for automated attendance tracking</li>
-          <li>Achieved >90% detection accuracy</li>
-          <li>Live video processing + CSV attendance logging</li>
+
+      <div class="exp-card">
+        <div class="exp-top">
+          <img src="https://img.icons8.com/color/48/chat-gpt.png" alt="" class="exp-logo">
+          <div class="exp-info"><h3>AfterQuery Expert</h3><p>San Francisco, CA — Remote</p></div>
+          <time>Apr 2026 – Present</time>
+        </div>
+        <h4>AI Training Data Specialist (Contract)</h4>
+        <ul>
+          <li>Created high-quality training data across 6 flagship projects: Silver, Shakespeare, Artifact, Seed, Paint, and Rewrite.</li>
+          <li><strong>Silver:</strong> Authored SWE-bench-style coding tasks with private repos, test harnesses, reference solutions, and Dockerfiles.</li>
+          <li><strong>Shakespeare:</strong> Designed creative-writing prompts and crafted editorial responses with precise craft diagnosis and line-level evidence.</li>
+          <li><strong>Artifact:</strong> Curated professional business artifacts (PPTX, DOCX, XLSX, PDF) meeting strict originality and design standards.</li>
+          <li>Maintained exceptional quality adhering to project-specific rubrics, validation pipelines, and gold-standard guidelines.</li>
         </ul>
+        <div class="tags"><span>SWE-Bench</span><span>Task Authoring</span><span>Docker</span><span>pytest</span><span>Gold-Standard Data</span><span>Creative Writing</span></div>
       </div>
-    </div>
-  </section>
 
-  <!-- Skills -->
-  <section id="skills" class="bg-zinc-900 py-20">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12">Technical Skills</h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div>
-          <h4 class="font-semibold text-emerald-400 mb-4">Benchmark & Evaluation Engineering</h4>
-          <p class="text-zinc-300 text-sm">SWE-Bench Task Authoring, Terminal-Bench Workflows, Deterministic Verifier Design, Oracle/NOP Validation, pytest Harness Construction, AI Systems QA, SxS Evaluation, Hallucination Detection, Bias & Safety Assessment, PII Identification, RLHF Pipeline QA, Multimodal Output Evaluation</p>
+      <div class="exp-card">
+        <div class="exp-top">
+          <img src="https://www.innodata.com/wp-content/uploads/2023/01/cropped-innodata-favicon-32x32.png" alt="" class="exp-logo">
+          <div class="exp-info"><h3>Innodata India Pvt. Ltd.</h3><p>Remote</p></div>
+          <time>Feb 2026 – Present</time>
         </div>
-        <div>
-          <h4 class="font-semibold text-emerald-400 mb-4">Infrastructure & DevOps</h4>
-          <p class="text-zinc-300 text-sm">Docker, Dockerfile Authoring, Linux Terminal Workflows, Bash Scripting, REST API Validation, ETL Pipeline Debugging, Dependency Resolution, Git, Postman</p>
-        </div>
-        <div>
-          <h4 class="font-semibold text-emerald-400 mb-4">Languages & Frameworks</h4>
-          <p class="text-zinc-300 text-sm">Python, JavaScript, TypeScript, Java, C++, React.js, Next.js, Tailwind CSS, HTML/CSS</p>
-        </div>
-        <div>
-          <h4 class="font-semibold text-emerald-400 mb-4">Databases & Platforms</h4>
-          <p class="text-zinc-300 text-sm">PostgreSQL, MongoDB, Firebase, MySQL, Mercor Studio, Airtable, LabelBox, Parimango</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Education & Certifications -->
-  <section id="education" class="max-w-5xl mx-auto px-6 py-20">
-    <div class="grid md:grid-cols-2 gap-12">
-      <div>
-        <h2 class="text-4xl font-bold mb-6">Education</h2>
-        <p class="text-2xl">Charutar Vidya Mandal University</p>
-        <p class="text-emerald-400">Bachelor of Engineering in Computer Engineering • Aug 2021 – May 2025</p>
-        <p class="text-zinc-400 mt-1">CGPA: 8.35/10</p>
-      </div>
-      <div>
-        <h2 class="text-4xl font-bold mb-6">Certifications & Languages</h2>
-        <ul class="space-y-3 text-zinc-300">
-          <li>Machine Learning with Python — IBM</li>
-          <li>Introduction to DevOps — IBM</li>
-          <li>SQL — University of Michigan</li>
-          <li>Data Analysis & Visualization — University at Buffalo</li>
-          <li>IELTS — Overall Band Score: 7.0</li>
-          <li class="pt-4"><span class="font-medium">English</span> — Professional Proficiency</li>
-          <li><span class="font-medium">Hindi / Gujarati</span> — Native Proficiency</li>
+        <h4>AI Data Annotator & Bilingual Content Evaluator (Contract)</h4>
+        <ul>
+          <li>Performed large-scale annotation: text classification, sentiment analysis, and NER.</li>
+          <li>Evaluated prompt-response alignment for contextual accuracy and completeness.</li>
+          <li>Identified bias, safety issues, and hallucinations; verified factual correctness from credible sources.</li>
+          <li>Followed strict annotation guidelines for multilingual (English/Hindi) AI training datasets.</li>
         </ul>
+        <div class="tags"><span>NER</span><span>Annotation</span><span>Sentiment Analysis</span><span>Bilingual</span><span>Quality Assurance</span></div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-top">
+          <img src="https://img.icons8.com/color/48/code.png" alt="" class="exp-logo">
+          <div class="exp-info"><h3>Venom Technologies</h3><p>Anand, Gujarat</p></div>
+          <time>Jan – May 2025</time>
+        </div>
+        <h4>Web Developer Intern</h4>
+        <ul>
+          <li>Developed customer and admin modules using React.js and Firebase with secure authentication.</li>
+          <li>Integrated Razorpay payment gateway, improving checkout performance by ~40%.</li>
+          <li>Implemented Zustand state management to optimize application performance.</li>
+        </ul>
+        <div class="tags"><span>React</span><span>Firebase</span><span>Razorpay</span><span>Zustand</span></div>
+      </div>
+
+      <div class="exp-card">
+        <div class="exp-top">
+          <img src="https://img.icons8.com/color/48/monitor.png" alt="" class="exp-logo">
+          <div class="exp-info"><h3>Bluebell Compuserve Pvt. Ltd.</h3><p>Anand</p></div>
+          <time>May 2024</time>
+        </div>
+        <h4>Web Development Intern</h4>
+        <ul>
+          <li>Built a full-stack pizza ordering system using React.js and MongoDB.</li>
+          <li>Improved UI/UX design to enhance usability and customer experience.</li>
+        </ul>
+        <div class="tags"><span>React</span><span>MongoDB</span><span>UI/UX</span></div>
       </div>
     </div>
   </section>
 
-  <footer class="bg-black py-12 text-center text-zinc-500 text-sm">
-    © 2026 Dhruvkumar Patel • AI Benchmark Engineer & Evaluation Specialist Portfolio
-  </footer>
+  <!-- ===== SKILLS ===== -->
+  <section class="section" id="skills">
+    <div class="container">
+      <h2 class="section-heading"><span>03</span>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <h4>AI Evaluation & Quality</h4>
+          <div class="pills"><span>LLM Evaluation</span><span>SxS Evaluation</span><span>Hallucination Detection</span><span>Bias & Safety</span><span>PII Identification</span><span>Prompt-Response Alignment</span><span>RLHF</span><span>AI Alignment</span><span>Benchmarking</span><span>Multimodal Eval</span></div>
+        </div>
+        <div class="skill-card">
+          <h4>Prompt Engineering & Data</h4>
+          <div class="pills"><span>Prompt Engineering</span><span>Prompt Optimization</span><span>Task Authoring</span><span>SWE-Bench Creation</span><span>Data Annotation</span><span>NER</span><span>Sentiment Analysis</span><span>Human Feedback</span></div>
+        </div>
+        <div class="skill-card">
+          <h4>Frontend</h4>
+          <div class="pills"><span>React.js</span><span>Next.js</span><span>TypeScript</span><span>HTML/CSS</span><span>Tailwind</span><span>Bootstrap</span></div>
+        </div>
+        <div class="skill-card">
+          <h4>Backend & Databases</h4>
+          <div class="pills"><span>Python</span><span>JavaScript</span><span>Java</span><span>C++</span><span>Firebase</span><span>MongoDB</span><span>PostgreSQL</span><span>MySQL</span><span>REST APIs</span></div>
+        </div>
+        <div class="skill-card">
+          <h4>Tools & Platforms</h4>
+          <div class="pills"><span>Docker</span><span>Git</span><span>Linux</span><span>Postman</span><span>Mercor Studio</span><span>Airtable</span><span>LabelBox</span><span>Parimango</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <script>
-    console.log('%c✅ Portfolio updated with latest resume details!', 'color: #10b981; font-size: 16px;');
-  </script>
+  <!-- ===== PROJECTS ===== -->
+  <section class="section section-alt" id="projects">
+    <div class="container">
+      <h2 class="section-heading"><span>04</span>Projects</h2>
+      <div class="projects-row">
+        <div class="project-card">
+          <h3>LN Dev Mart</h3>
+          <p class="proj-type">Full-Stack Retail System</p>
+          <p>Retail dashboard with POS billing, real-time inventory tracking, automated GST reporting. Reduced build time 40% with Turbopack. Secure API routes and KPI-driven analytics.</p>
+          <div class="pills"><span>Next.js</span><span>React</span><span>TypeScript</span><span>PostgreSQL</span><span>Tailwind</span></div>
+        </div>
+        <div class="project-card">
+          <h3>Attendance System</h3>
+          <p class="proj-type">Face Recognition Pipeline</p>
+          <p>Real-time face recognition for automated attendance. >90% detection accuracy with live video processing and CSV-based logging.</p>
+          <div class="pills"><span>Python</span><span>OpenCV</span><span>dlib</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDUCATION ===== -->
+  <section class="section" id="education">
+    <div class="container">
+      <h2 class="section-heading"><span>05</span>Education & Certifications</h2>
+      <div class="edu-layout">
+        <div class="edu-left">
+          <h3>Charutar Vidya Mandal University</h3>
+          <p>B.E. Computer Engineering &middot; Aug 2021 – May 2025</p>
+          <p class="gpa">CGPA <strong>8.35 / 10</strong></p>
+        </div>
+        <div class="edu-right">
+          <ul>
+            <li>Machine Learning with Python — IBM</li>
+            <li>Introduction to DevOps — IBM</li>
+            <li>SQL — University of Michigan</li>
+            <li>Data Analysis & Visualization — University at Buffalo</li>
+            <li>IELTS — Band 7.0</li>
+          </ul>
+          <p class="langs">English (Professional) &middot; Hindi (Native) &middot; Gujarati (Native)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section section-alt" id="contact">
+    <div class="container text-center">
+      <h2 class="contact-title">Let's Connect</h2>
+      <p class="contact-sub">Open for AI evaluation, prompt engineering, and full-stack development opportunities.</p>
+      <div class="contact-links">
+        <a href="mailto:dhruvpatel2284@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+        <a href="tel:+919898570058"><i class="fas fa-phone"></i> Phone</a>
+        <a href="https://linkedin.com/in/dhruv-patel-0a0173259" target="_blank"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+        <a href="https://github.com/Dhruvpatel2684" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+      <p class="copyright">&copy; 2026 Dhruv Patel</p>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

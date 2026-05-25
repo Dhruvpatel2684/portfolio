@@ -1,527 +1,228 @@
-// ========================================
-// Main JavaScript for Portfolio
-// ========================================
+gsap.registerPlugin(ScrollTrigger);
 
+// =============================================
+// FLOATING DOT FIELD — Antigravity-style
+// Dots spawn near cursor position across the
+// ENTIRE page and drift away with physics
+// =============================================
+class DotField {
+  constructor() {
+    this.canvas = document.getElementById('dot-field');
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this.dots = [];
+    this.mouse = { x: -999, y: -999 };
+    this.maxDots = 120;
+    this.spawnRate = 3;
+    this.frame = 0;
+
+    this.resize();
+    this.listen();
+    this.loop();
+  }
+
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = document.documentElement.scrollHeight;
+  }
+
+  listen() {
+    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('scroll', () => {
+      this.canvas.height = document.documentElement.scrollHeight;
+    });
+    document.addEventListener('mousemove', e => {
+      this.mouse.x = e.pageX;
+      this.mouse.y = e.pageY;
+    });
+    document.addEventListener('mouseleave', () => {
+      this.mouse.x = -999;
+      this.mouse.y = -999;
+    });
+  }
+
+  spawn() {
+    if (this.mouse.x < 0) return;
+    for (let i = 0; i < this.spawnRate; i++) {
+      if (this.dots.length >= this.maxDots) this.dots.shift();
+      const angle = Math.random() * Math.PI * 2;
+      const dist = Math.random() * 30;
+      this.dots.push({
+        x: this.mouse.x + Math.cos(angle) * dist,
+        y: this.mouse.y + Math.sin(angle) * dist,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        r: Math.random() * 3 + 1.5,
+        life: 1,
+        decay: Math.random() * 0.008 + 0.004,
+      });
+    }
+  }
+
+  update() {
+    const color = getComputedStyle(document.documentElement).getPropertyValue('--dot').trim();
+
+    for (let i = this.dots.length - 1; i >= 0; i--) {
+      const d = this.dots[i];
+
+      // Repel from cursor
+      const dx = d.x - this.mouse.x;
+      const dy = d.y - this.mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100 && dist > 0) {
+        const force = (100 - dist) / 100;
+        d.vx += (dx / dist) * force * 0.8;
+        d.vy += (dy / dist) * force * 0.8;
+      }
+
+      d.vx *= 0.97;
+      d.vy *= 0.97;
+      d.x += d.vx;
+      d.y += d.vy;
+      d.life -= d.decay;
+
+      if (d.life <= 0) {
+        this.dots.splice(i, 1);
+        continue;
+      }
+
+      this.ctx.beginPath();
+      this.ctx.arc(d.x, d.y, d.r * d.life, 0, Math.PI * 2);
+      this.ctx.fillStyle = color || 'rgba(26,115,232,0.5)';
+      this.ctx.globalAlpha = d.life * 0.7;
+      this.ctx.fill();
+      this.ctx.globalAlpha = 1;
+    }
+  }
+
+  loop() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.frame++;
+    if (this.frame % 2 === 0) this.spawn();
+    this.update();
+    requestAnimationFrame(() => this.loop());
+  }
+}
+
+// =============================================
+// SPLIT HERO NAME INTO CHARS
+// =============================================
+function splitName() {
+  const el = document.getElementById('hero-name');
+  if (!el) return;
+  const text = el.textContent;
+  el.textContent = '';
+  text.split('').forEach(ch => {
+    const s = document.createElement('span');
+    s.className = 'char';
+    s.textContent = ch === ' ' ? '\u00A0' : ch;
+    el.appendChild(s);
+  });
+}
+
+// =============================================
+// TITLE HOVER — letters scatter from cursor
+// =============================================
+function initNameHover() {
+  const el = document.getElementById('hero-name');
+  if (!el) return;
+  el.addEventListener('mousemove', e => {
+    el.querySelectorAll('.char').forEach(ch => {
+      const r = ch.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = cx - e.clientX;
+      const dy = cy - e.clientY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 80) {
+        const f = (80 - dist) / 80;
+        ch.style.transform = `translate(${dx/dist*f*12}px,${dy/dist*f*9}px)`;
+        ch.style.transition = 'transform .1s ease-out';
+      }
+    });
+  });
+  el.addEventListener('mouseleave', () => {
+    el.querySelectorAll('.char').forEach(ch => {
+      ch.style.transform = '';
+      ch.style.transition = 'transform .45s cubic-bezier(.4,0,.2,1)';
+    });
+  });
+}
+
+// =============================================
+// THEME TOGGLE
+// =============================================
+function initTheme() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const saved = localStorage.getItem('dp-theme');
+  if (saved) { document.documentElement.setAttribute('data-theme', saved); icon(btn, saved); }
+  btn.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('dp-theme', next);
+    icon(btn, next);
+  });
+}
+function icon(b, t) { b.innerHTML = t === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; }
+
+// =============================================
+// GSAP HERO ENTRANCE
+// =============================================
+function animateHero() {
+  gsap.set('.hero-label', { opacity: 0, y: 12 });
+  gsap.set('#hero-name .char', { opacity: 0, y: 18 });
+  gsap.set('.hero-sub', { opacity: 0, y: 12 });
+  gsap.set('.hero-actions', { opacity: 0, y: 12 });
+
+  const tl = gsap.timeline({ delay: 0.2, defaults: { ease: 'power3.out' } });
+  tl.to('.hero-label', { opacity: 1, y: 0, duration: 0.6 })
+    .to('#hero-name .char', { opacity: 1, y: 0, stagger: 0.025, duration: 0.45 }, '-=.3')
+    .to('.hero-sub', { opacity: 1, y: 0, duration: 0.6 }, '-=.2')
+    .to('.hero-actions', { opacity: 1, y: 0, duration: 0.6 }, '-=.3');
+}
+
+// =============================================
+// SCROLL REVEALS
+// =============================================
+function initReveals() {
+  gsap.utils.toArray('.exp-card,.skill-card,.project-card,.about-copy p,.about-sidebar,.edu-layout,.contact-title,.contact-links').forEach(el => {
+    gsap.fromTo(el, { opacity: 0, y: 30 }, {
+      opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+    });
+  });
+}
+
+// =============================================
+// NAV SCROLL
+// =============================================
+function initNav() {
+  const h = document.getElementById('site-header');
+  window.addEventListener('scroll', () => h.classList.toggle('scrolled', window.scrollY > 40));
+}
+
+// =============================================
+// SMOOTH SCROLL
+// =============================================
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// =============================================
+// INIT
+// =============================================
 document.addEventListener('DOMContentLoaded', () => {
-    initNavigation();
-    initScrollAnimations();
-    initContactForm();
-    initScrollToTop();
-    initMobileMenu();
-    initSkillAnimations();
+  splitName();
+  initTheme();
+  initNav();
+  initNameHover();
+  animateHero();
+  initReveals();
+  new DotField();
 });
-
-// ========================================
-// Navigation
-// ========================================
-
-function initNavigation() {
-    const navbar = document.getElementById('navbar');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
-    // Active link highlighting
-    const sections = document.querySelectorAll('section[id]');
-    
-    const highlightNavLink = () => {
-        const scrollY = window.pageYOffset;
-
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 100;
-            const sectionId = section.getAttribute('id');
-            
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${sectionId}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        });
-    };
-
-    window.addEventListener('scroll', highlightNavLink);
-    highlightNavLink(); // Call once on load
-
-    // Smooth scroll for anchor links
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-
-                // Close mobile menu if open
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
-            }
-        });
-    });
-}
-
-// ========================================
-// Mobile Menu
-// ========================================
-
-function initMobileMenu() {
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            
-            // Toggle icon
-            const icon = mobileMenuBtn.querySelector('i');
-            if (mobileMenu.classList.contains('hidden')) {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            } else {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            }
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
-                const icon = mobileMenuBtn.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
-    }
-}
-
-// ========================================
-// Scroll Animations
-// ========================================
-
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                // Optional: unobserve after animation
-                // observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Observe elements with scroll-reveal class
-    const revealElements = document.querySelectorAll('.scroll-reveal');
-    revealElements.forEach(el => observer.observe(el));
-
-    // Add scroll-reveal class to sections for animation
-    const animateSections = document.querySelectorAll('.skill-card, .project-card, .education-card, .experience-item');
-    animateSections.forEach(el => {
-        el.classList.add('scroll-reveal');
-        observer.observe(el);
-    });
-}
-
-// ========================================
-// Skill Bar Animations
-// ========================================
-
-function initSkillAnimations() {
-    const skillBars = document.querySelectorAll('.skill-bar');
-    
-    const skillObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const bar = entry.target;
-                const width = bar.style.width;
-                bar.style.width = '0';
-                
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
-                
-                skillObserver.unobserve(bar);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    skillBars.forEach(bar => skillObserver.observe(bar));
-}
-
-// ========================================
-// Contact Form
-// ========================================
-
-function initContactForm() {
-    const form = document.getElementById('contact-form');
-    const formMessage = document.getElementById('form-message');
-
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = {
-                name: document.getElementById('name').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                subject: document.getElementById('subject').value.trim(),
-                message: document.getElementById('message').value.trim()
-            };
-
-            // Basic validation
-            if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-                showFormMessage('Please fill in all fields.', 'error');
-                return;
-            }
-
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(formData.email)) {
-                showFormMessage('Please enter a valid email address.', 'error');
-                return;
-            }
-
-            // Disable submit button
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending...';
-
-            // Simulate form submission (replace with actual API call)
-            try {
-                // In a real application, you would send this to your backend
-                await simulateFormSubmission(formData);
-
-                // Success
-                showFormMessage('Thank you for your message! I\'ll get back to you soon.', 'success');
-                form.reset();
-            } catch (error) {
-                // Error
-                showFormMessage('Sorry, there was an error sending your message. Please try again or contact me directly on LinkedIn.', 'error');
-            } finally {
-                // Re-enable submit button
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-            }
-        });
-    }
-}
-
-function showFormMessage(message, type) {
-    const formMessage = document.getElementById('form-message');
-    formMessage.textContent = message;
-    formMessage.className = `mt-4 p-4 rounded-lg ${type}`;
-    formMessage.classList.remove('hidden');
-
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        formMessage.classList.add('hidden');
-    }, 5000);
-}
-
-function simulateFormSubmission(formData) {
-    return new Promise((resolve, reject) => {
-        console.log('Form data:', formData);
-        
-        // Simulate network delay
-        setTimeout(() => {
-            // 90% success rate simulation
-            if (Math.random() > 0.1) {
-                resolve({ success: true });
-            } else {
-                reject(new Error('Network error'));
-            }
-        }, 1500);
-    });
-}
-
-// ========================================
-// Scroll to Top Button
-// ========================================
-
-function initScrollToTop() {
-    const scrollTopBtn = document.getElementById('scroll-top');
-
-    if (scrollTopBtn) {
-        // Show/hide button based on scroll position
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                scrollTopBtn.classList.add('show');
-            } else {
-                scrollTopBtn.classList.remove('show');
-            }
-        });
-
-        // Scroll to top on click
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    }
-}
-
-// ========================================
-// Typing Animation (Optional Enhancement)
-// ========================================
-
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
-// ========================================
-// Parallax Effect (Optional Enhancement)
-// ========================================
-
-function initParallax() {
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallaxElements = document.querySelectorAll('.parallax');
-        
-        parallaxElements.forEach(el => {
-            const speed = el.dataset.speed || 0.5;
-            el.style.transform = `translateY(${scrolled * speed}px)`;
-        });
-    });
-}
-
-// ========================================
-// Dynamic Year in Footer
-// ========================================
-
-function updateFooterYear() {
-    const yearElements = document.querySelectorAll('.current-year');
-    const currentYear = new Date().getFullYear();
-    
-    yearElements.forEach(el => {
-        el.textContent = currentYear;
-    });
-}
-
-updateFooterYear();
-
-// ========================================
-// Keyboard Navigation Enhancement
-// ========================================
-
-document.addEventListener('keydown', (e) => {
-    // Press 'H' to go home
-    if (e.key === 'h' || e.key === 'H') {
-        if (!e.target.matches('input, textarea')) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    // Press 'C' to focus on contact form
-    if (e.key === 'c' || e.key === 'C') {
-        if (!e.target.matches('input, textarea')) {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-                setTimeout(() => {
-                    document.getElementById('name')?.focus();
-                }, 500);
-            }
-        }
-    }
-});
-
-// ========================================
-// Performance Monitoring
-// ========================================
-
-// Log performance metrics
-window.addEventListener('load', () => {
-    if ('performance' in window) {
-        const perfData = window.performance.timing;
-        const pageLoadTime = perfData.loadEventEnd - perfData.navigationStart;
-        console.log(`Page load time: ${pageLoadTime}ms`);
-    }
-});
-
-// ========================================
-// Error Handling
-// ========================================
-
-window.addEventListener('error', (e) => {
-    console.error('Global error:', e.error);
-    // In production, you might want to send this to an error tracking service
-});
-
-// ========================================
-// Service Worker Registration (Optional)
-// ========================================
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        // Uncomment when you have a service worker
-        // navigator.serviceWorker.register('/sw.js')
-        //     .then(registration => console.log('SW registered:', registration))
-        //     .catch(error => console.log('SW registration failed:', error));
-    });
-}
-
-// ========================================
-// Utility Functions
-// ========================================
-
-// Debounce function for performance
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Throttle function for scroll events
-function throttle(func, limit) {
-    let inThrottle;
-    return function(...args) {
-        if (!inThrottle) {
-            func.apply(this, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    };
-}
-
-// Check if element is in viewport
-function isInViewport(element) {
-    const rect = element.getBoundingClientRect();
-    return (
-        rect.top >= 0 &&
-        rect.left >= 0 &&
-        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
-// ========================================
-// Console Art (Fun Easter Egg)
-// ========================================
-
-console.log(`
-%c
-╔═══════════════════════════════════════════════════════╗
-║                                                       ║
-║           Portfolio by Dhruv Patel                    ║
-║           Computer Engineering Student                ║
-║                                                       ║
-║   Looking for a developer? Let's connect!             ║
-║   LinkedIn: linkedin.com/in/dhruv-patel-0a0173259/   ║
-║                                                       ║
-╚═══════════════════════════════════════════════════════╝
-`, 'color: #81C3D7; font-family: monospace; font-size: 12px;');
-
-console.log('%cInterested in the code? Check out the GitHub repo!', 'color: #2C5F7C; font-size: 14px; font-weight: bold;');
-
-// ========================================
-// Analytics (Optional - Add your tracking code)
-// ========================================
-
-// Example: Track page views, button clicks, etc.
-function trackEvent(category, action, label) {
-    // Implement your analytics tracking here
-    console.log('Event tracked:', { category, action, label });
-    
-    // Example with Google Analytics (uncomment when implemented):
-    // if (typeof gtag !== 'undefined') {
-    //     gtag('event', action, {
-    //         'event_category': category,
-    //         'event_label': label
-    //     });
-    // }
-}
-
-// Track important interactions
-document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
-    btn.addEventListener('click', () => {
-        trackEvent('Button', 'Click', btn.textContent.trim());
-    });
-});
-
-// ========================================
-// Dark Mode Toggle (Optional Enhancement)
-// ========================================
-
-function initDarkModeToggle() {
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    
-    if (darkModeToggle) {
-        // Check for saved preference
-        const darkMode = localStorage.getItem('darkMode');
-        
-        if (darkMode === 'enabled') {
-            document.body.classList.add('light-mode');
-        }
-
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            
-            if (document.body.classList.contains('light-mode')) {
-                localStorage.setItem('darkMode', 'enabled');
-            } else {
-                localStorage.setItem('darkMode', 'disabled');
-            }
-        });
-    }
-}
-
-// ========================================
-// Preloader (Optional)
-// ========================================
-
-window.addEventListener('load', () => {
-    const loader = document.querySelector('.loading');
-    if (loader) {
-        setTimeout(() => {
-            loader.classList.add('hidden');
-        }, 500);
-    }
-});
-
-// ========================================
-// Initialize Optional Features
-// ========================================
-
-// Uncomment to enable
-// initParallax();
-// initDarkModeToggle();
