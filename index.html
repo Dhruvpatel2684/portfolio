@@ -12,8 +12,8 @@
 </head>
 <body>
 
-  <!-- Floating dot canvas — covers ENTIRE page, dots appear near cursor -->
-  <canvas id="dot-field"></canvas>
+  <!-- Antigravity particle effect container (hero section) -->
+  <div id="antigravity-container"></div>
 
   <!-- Theme toggle top-left -->
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
@@ -247,8 +247,10 @@
     </div>
   </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/antigravity.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

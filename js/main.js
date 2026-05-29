@@ -1,107 +1,34 @@
 gsap.registerPlugin(ScrollTrigger);
 
 // =============================================
-// FLOATING DOT FIELD — Antigravity-style
-// Dots spawn near cursor position across the
-// ENTIRE page and drift away with physics
+// ANTIGRAVITY EFFECT INITIALIZATION
+// Uses Three.js AntigravityEffect from antigravity.js
 // =============================================
-class DotField {
-  constructor() {
-    this.canvas = document.getElementById('dot-field');
-    if (!this.canvas) return;
-    this.ctx = this.canvas.getContext('2d');
-    this.dots = [];
-    this.mouse = { x: -999, y: -999 };
-    this.maxDots = 120;
-    this.spawnRate = 3;
-    this.frame = 0;
+let antigravityInstance = null;
 
-    this.resize();
-    this.listen();
-    this.loop();
-  }
+function initAntigravity() {
+  const container = document.getElementById('antigravity-container');
+  if (!container) return;
 
-  resize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = document.documentElement.scrollHeight;
-  }
+  const theme = document.documentElement.getAttribute('data-theme') || 'light';
+  const color = theme === 'dark' ? '#818cf8' : '#1a73e8';
 
-  listen() {
-    window.addEventListener('resize', () => this.resize());
-    window.addEventListener('scroll', () => {
-      this.canvas.height = document.documentElement.scrollHeight;
-    });
-    document.addEventListener('mousemove', e => {
-      this.mouse.x = e.pageX;
-      this.mouse.y = e.pageY;
-    });
-    document.addEventListener('mouseleave', () => {
-      this.mouse.x = -999;
-      this.mouse.y = -999;
-    });
-  }
-
-  spawn() {
-    if (this.mouse.x < 0) return;
-    for (let i = 0; i < this.spawnRate; i++) {
-      if (this.dots.length >= this.maxDots) this.dots.shift();
-      const angle = Math.random() * Math.PI * 2;
-      const dist = Math.random() * 30;
-      this.dots.push({
-        x: this.mouse.x + Math.cos(angle) * dist,
-        y: this.mouse.y + Math.sin(angle) * dist,
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: (Math.random() - 0.5) * 1.2,
-        r: Math.random() * 3 + 1.5,
-        life: 1,
-        decay: Math.random() * 0.008 + 0.004,
-      });
-    }
-  }
-
-  update() {
-    const color = getComputedStyle(document.documentElement).getPropertyValue('--dot').trim();
-
-    for (let i = this.dots.length - 1; i >= 0; i--) {
-      const d = this.dots[i];
-
-      // Repel from cursor
-      const dx = d.x - this.mouse.x;
-      const dy = d.y - this.mouse.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < 100 && dist > 0) {
-        const force = (100 - dist) / 100;
-        d.vx += (dx / dist) * force * 0.8;
-        d.vy += (dy / dist) * force * 0.8;
-      }
-
-      d.vx *= 0.97;
-      d.vy *= 0.97;
-      d.x += d.vx;
-      d.y += d.vy;
-      d.life -= d.decay;
-
-      if (d.life <= 0) {
-        this.dots.splice(i, 1);
-        continue;
-      }
-
-      this.ctx.beginPath();
-      this.ctx.arc(d.x, d.y, d.r * d.life, 0, Math.PI * 2);
-      this.ctx.fillStyle = color || 'rgba(26,115,232,0.5)';
-      this.ctx.globalAlpha = d.life * 0.7;
-      this.ctx.fill();
-      this.ctx.globalAlpha = 1;
-    }
-  }
-
-  loop() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.frame++;
-    if (this.frame % 2 === 0) this.spawn();
-    this.update();
-    requestAnimationFrame(() => this.loop());
-  }
+  antigravityInstance = new AntigravityEffect(container, {
+    count: 300,
+    magnetRadius: 6,
+    ringRadius: 7,
+    waveSpeed: 0.4,
+    waveAmplitude: 1,
+    particleSize: 1.5,
+    lerpSpeed: 0.05,
+    color: color,
+    autoAnimate: true,
+    particleVariance: 1,
+    rotationSpeed: 0.1,
+    depthFactor: 1,
+    pulseSpeed: 3,
+    fieldStrength: 10,
+  });
 }
 
 // =============================================
@@ -163,6 +90,11 @@ function initTheme() {
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('dp-theme', next);
     icon(btn, next);
+    // Update antigravity particle color on theme change
+    if (antigravityInstance) {
+      const newColor = next === 'dark' ? '#818cf8' : '#1a73e8';
+      antigravityInstance.setColor(newColor);
+    }
   });
 }
 function icon(b, t) { b.innerHTML = t === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; }
@@ -224,5 +156,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initNameHover();
   animateHero();
   initReveals();
-  new DotField();
+  initAntigravity();
 });
